@@ -2,7 +2,9 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -14,8 +16,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = True
 
 
-
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -24,11 +26,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #External Packages
+    # External Packages
     'rest_framework',
-    #Internal Packages
+    # Internal Packages
+    'drfecommerce.product',
 
-]   
+
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
