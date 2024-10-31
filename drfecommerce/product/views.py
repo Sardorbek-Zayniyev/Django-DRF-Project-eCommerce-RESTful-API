@@ -5,12 +5,12 @@ from .models import Category, Brand, Product
 from .serializers import CategorySerializer, BrandSerializer, ProductSerializer
 
 
-class CategoryView(viewsets.ViewSet):
+class CategoryViewSet(viewsets.ViewSet):
     """
     A simple Viewset for viewing all categories
     """
 
-    queryset = Category.objects, all()
+    queryset = Category.objects.all()
 
     def list(self, request):
         serializer = CategorySerializer(self.queryset, many=True)

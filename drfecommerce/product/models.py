@@ -4,13 +4,13 @@ from mptt.models import MPTTModel, TreeForeignKey
 # Create your models here.
 
 
-class Category(models.Model):
+class Category(MPTTModel):
     name = models.CharField(max_length=100)
     parent = TreeForeignKey(
         "self", on_delete=models.PROTECT, null=True, blank=True)
 
     class MPTTMeta:
-        order_insertion_by = ['name']
+        order_insertion_by = ["name"]
 
     class Meta:
         verbose_name_plural = 'categories'
@@ -22,6 +22,9 @@ class Category(models.Model):
 class Brand(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     category = TreeForeignKey(
@@ -31,3 +34,6 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     is_digital = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
