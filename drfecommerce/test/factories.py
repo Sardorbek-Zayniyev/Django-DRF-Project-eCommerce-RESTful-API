@@ -25,3 +25,4 @@ class ProductFactory(factory.django.DjangoModelFactory):
     name = "test_product"
     description = "test_description"
     is_digital = True
+    is_active = True

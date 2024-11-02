@@ -34,6 +34,17 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     is_digital = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.name
+
+
+class ProductLine(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    price = models.DecimalField(decimal_places=2, max_digits=5)
+    sku = models.CharField(max_length=100)
+    stock_qty = models.IntegerField()
+    is_active = models.BooleanField(default=False)
