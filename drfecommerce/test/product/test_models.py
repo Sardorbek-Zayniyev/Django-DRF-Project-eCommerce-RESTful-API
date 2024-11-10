@@ -44,3 +44,12 @@ class TestProductLineModel:
         product_line_factory(order=1, product=obj)
         with pytest.raises(ValidationError):
             product_line_factory(order=1, product=obj).clean()
+
+
+class TestProductImageModel:
+    def test_str_method(self, product_image_factory):
+        # Arrange
+        # Act
+        obj = product_image_factory(url="test.jpg")
+        # Assert
+        assert obj.__str__() == "test.jpg"
