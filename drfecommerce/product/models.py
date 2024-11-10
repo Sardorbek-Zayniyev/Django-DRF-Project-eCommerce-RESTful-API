@@ -85,9 +85,8 @@ class ProductLine(models.Model):
 class ProductImage(models.Model):
     productline = models.ForeignKey(
         ProductLine, on_delete=models.CASCADE, related_name="product_image")
-    name = models.CharField(max_length=100)
     alternative_text = models.CharField(max_length=100)
-    url = models.ImageField(upload_to=None)
+    url = models.ImageField(upload_to=None, default="test.jpg")
     order = OrderField(unique_for_field="productline", blank=True)
 
     def clean(self):
@@ -101,4 +100,4 @@ class ProductImage(models.Model):
         return super(ProductImage, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.url)
