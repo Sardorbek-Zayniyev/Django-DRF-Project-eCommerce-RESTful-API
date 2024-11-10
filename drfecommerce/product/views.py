@@ -44,7 +44,7 @@ class ProductViewSet(viewsets.ViewSet):
     A simple Viewset for viewing all products
     """
 
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().isactive()
     lookup_field = "slug"
 
     def retrieve(self, request, slug=None):
