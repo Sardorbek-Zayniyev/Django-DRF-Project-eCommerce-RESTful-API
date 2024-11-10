@@ -20,8 +20,7 @@ class OrderField(models.PositiveIntegerField):
     def _check_for_field_attribute(self, **kwargs):
         if self.unique_for_field is None:
             return [
-                checks.Error(
-                    "OrderField must define a 'unique_for_field' attribute")
+                checks.Error("OrderField must define a 'unique_for_field' attribute")
             ]
         elif self.unique_for_field not in [
             f.name for f in self.model._meta.get_fields()
