@@ -1,6 +1,14 @@
 from rest_framework import serializers
 
-from .models import Category, Brand, Product, ProductLine, ProductImage, Attribute, AttributeValue
+from .models import (
+    Category,
+    Brand,
+    Product,
+    ProductLine,
+    ProductImage,
+    Attribute,
+    AttributeValue,
+)
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -28,7 +36,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 class AttributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attribute
-        fields = ('id', 'name')
+        fields = ("id", "name")
 
 
 class AttributeValueSerializer(serializers.ModelSerializer):
@@ -36,26 +44,28 @@ class AttributeValueSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AttributeValue
-        fields = ('attribute', "attribute_value")
+        fields = ("attribute", "attribute_value")
 
 
 class ProductLineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductLine
-        fields = ("price", "sku", "stock_qty", "order",
-                  "product_image", "attribute_value", )
+        fields = (
+            "price",
+            "sku",
+            "stock_qty",
+            "order",
+            "product_image",
+            "attribute_value",
+        )
 
         def to_representation(self, instance):
             data = super().to_representation(instance)
-            av_data = data.pop('attribute')
+            av_data = data.pop("attribute")
             attr_values = {}
             for key in av_data:
-                attr_values.update(
-                    {
-                        key['attribute']['id']: key['attribute_value']
-                    }
-                )
+                attr_values.update({key["attribute"]["id"]: key["attribute_value"]})
             data.update({"specification": attr_values})
             return data
 

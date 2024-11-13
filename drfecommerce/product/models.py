@@ -91,6 +91,26 @@ class ProductLineAttributeValue(models.Model):
     class Meta:
         unique_together = ("attribute_value", "product_line")
 
+    def clean(self):
+        qs = (
+            ProductLineAttributeValue.objects.filter(
+                attribute_value=self.attribute_value
+            )
+            .filter(product_line=self.product_line)
+            .exists()
+        )
+        if not qs:
+            iqs = Attribute.filter(
+                attribute_value__product_line_attribute_value=self.product_line
+            ).values_list("pk", flat=True)
+
+            if self.attribute_value.attribute.id in list(iqs):
+                raise ValidationError("Duplicate attribute exists")
+
+        def save(self, *args, **kwargs):
+            self.full_clean()
+            return super(ProductLine, self).save(*args, **kwargs)
+
 
 class ProductLine(models.Model):
     product = models.ForeignKey(
@@ -101,8 +121,7 @@ class ProductLine(models.Model):
         through="ProductLineAttributeValue",
         related_name="product_line_attribute_value",
     )
-    product_type = models.ForeignKey(
-        "ProductType", on_delete=models.PROTECT)
+    product_type = models.ForeignKey("ProductType", on_delete=models.PROTECT)
 
     price = models.DecimalField(decimal_places=2, max_digits=5)
     sku = models.CharField(max_length=100)
