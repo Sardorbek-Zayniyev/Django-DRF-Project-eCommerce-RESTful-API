@@ -8,6 +8,7 @@ from .models import (
     Product,
     ProductImage,
     ProductLine,
+    ProductType,
     Attribute,
     AttributeValue,
 )
@@ -53,6 +54,16 @@ class ProductLineAdmin(admin.ModelAdmin):
     ]
 
 
+class AttributeInline(admin.TabularInline):
+    model = Attribute.product_type_attribute.through
+
+
+class ProductTypeAdmin(admin.ModelAdmin):
+    inlines = [
+        AttributeInline,
+    ]
+
+
 admin.site.register(Category)
 admin.site.register(Brand)
 admin.site.register(Product, ProductAdmin)
@@ -60,3 +71,4 @@ admin.site.register(ProductLine, ProductLineAdmin)
 admin.site.register(Attribute)
 admin.site.register(AttributeValue)
 admin.site.register(ProductImage)
+admin.site.register(ProductType, ProductTypeAdmin)
