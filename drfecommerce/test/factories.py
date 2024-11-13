@@ -1,5 +1,11 @@
 import factory
-from drfecommerce.product.models import Category, Brand, Product, ProductLine, ProductImage
+from drfecommerce.product.models import (
+    Category,
+    Brand,
+    Product,
+    ProductLine,
+    ProductImage,
+)
 
 
 class CategoryFactory(factory.django.DjangoModelFactory):
