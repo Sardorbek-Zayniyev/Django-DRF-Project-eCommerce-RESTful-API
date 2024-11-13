@@ -2,7 +2,15 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
-from .models import Brand, Category, Product, ProductImage, ProductLine, Attribute, AttributeValue
+from .models import (
+    Brand,
+    Category,
+    Product,
+    ProductImage,
+    ProductLine,
+    Attribute,
+    AttributeValue,
+)
 
 
 class EditLinkInline(object):
