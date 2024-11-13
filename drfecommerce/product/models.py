@@ -12,7 +12,8 @@ class ActiveQueryset(models.QuerySet):
 
 
 class Category(MPTTModel):
-    parent = TreeForeignKey("self", on_delete=models.PROTECT, null=True, blank=True)
+    parent = TreeForeignKey(
+        "self", on_delete=models.PROTECT, null=True, blank=True)
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=255)
     is_active = models.BooleanField(default=False)
@@ -95,17 +96,20 @@ class ProductLine(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="product_line"
     )
+    attribute_value = models.ManyToManyField(
+        AttributeValue,
+        through="ProductLineAttributeValue",
+        related_name="product_line_attribute_value",
+    )
+    product_type = models.ForeignKey(
+        "ProductType", on_delete=models.PROTECT)
 
     price = models.DecimalField(decimal_places=2, max_digits=5)
     sku = models.CharField(max_length=100)
     stock_qty = models.IntegerField()
     order = OrderField(unique_for_field="product", blank=True)
     is_active = models.BooleanField(default=False)
-    attribute_value = models.ManyToManyField(
-        AttributeValue,
-        through="ProductLineAttributeValue",
-        related_name="product_line_attribute_value",
-    )
+
     objects = ActiveQueryset.as_manager()
 
     def clean(self):
@@ -142,3 +146,23 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return str(self.url)
+
+
+class ProductType(models.Model):
+    name = models.CharField(max_length=100)
+
+
+class ProductTypeAttribute(models.Model):
+    product_type = models.ForeignKey(
+        ProductType,
+        on_delete=models.CASCADE,
+        related_name="product_type_attribute_pt",
+    )
+    attribute = models.ForeignKey(
+        Attribute,
+        on_delete=models.CASCADE,
+        related_name="product_type_attribute_a",
+    )
+
+    class Meta:
+        unique_together = ("product_type", "attribute")
