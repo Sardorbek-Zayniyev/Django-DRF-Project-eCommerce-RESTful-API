@@ -12,7 +12,8 @@ class ActiveQueryset(models.QuerySet):
 
 
 class Category(MPTTModel):
-    parent = TreeForeignKey("self", on_delete=models.PROTECT, null=True, blank=True)
+    parent = TreeForeignKey(
+        "self", on_delete=models.PROTECT, null=True, blank=True)
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=255)
     is_active = models.BooleanField(default=False)
@@ -61,12 +62,18 @@ class Attribute(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
+    def __str__(self):
+        return self.name
+
 
 class AttributeValue(models.Model):
     attribute = models.ForeignKey(
         Attribute, on_delete=models.CASCADE, related_name="attribute_value"
     )
     attribute_value = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.attribute.name}-{self.attribute_value}"
 
 
 class ProductLineAttributeValue(models.Model):
@@ -96,7 +103,8 @@ class ProductLine(models.Model):
     order = OrderField(unique_for_field="product", blank=True)
     is_active = models.BooleanField(default=False)
     attribute_values = models.ManyToManyField(
-        AttributeValue, through="ProductLineAttributeValue"
+        AttributeValue, through="ProductLineAttributeValue",
+        related_name='product_line_attribute_value'
     )
     objects = ActiveQueryset.as_manager()
 
